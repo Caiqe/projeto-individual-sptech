@@ -53,10 +53,7 @@
                          Para inserir mais um campo, copie uma das inputs abaixo.
                          Assim que inserir vá para o script abaixo.
                      -->
-          <div class="campo">
-            <span>Código de ativação:</span>
-            <input id="codigo_input" type="text" placeholder="Insira aqui seu código" />
-          </div>
+          
           <div class="campo">
             <span>Nome:</span>
             <input id="nome_input" type="text" placeholder="Seu nome" />
@@ -72,6 +69,14 @@
           <div class="campo">
             <span>Confirmação da Senha:</span>
             <input id="confirmacao_senha_input" type="password" placeholder="******" />
+          </div>
+          <div class="campo">
+            <span>Cidade:</span>
+            <input id="cidade_input" type="text" placeholder="Onde você nasceu?" />
+          </div>
+          <div class="campo">
+            <span>UF:</span>
+            <input id="uf_input" type="text" placeholder="Ex: SP" />
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
         </div>
@@ -99,7 +104,7 @@
 <script>
 
   // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
+  let listaEmailsCadastrados = [];
 
   function cadastrar() {
     // aguardar();
@@ -110,7 +115,8 @@
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
-    var codigoVar = codigo_input.value;
+    var cidadeVar = cidade_input.value;
+    var ufVar = uf_input.value;
     var idEmpresaVincular
 
     // Verificando se há algum campo em branco
@@ -119,7 +125,8 @@
       emailVar == "" ||
       senhaVar == "" ||
       confirmacaoSenhaVar == "" ||
-      codigoVar == ""
+      cidadeVar == "" ||
+      ufVar == ""
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
@@ -131,17 +138,15 @@
       setInterval(sumirMensagem, 5000);
     }
 
-    // Verificando se o código de ativação é de alguma empresa cadastrada
-    for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-      if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        idEmpresaVincular = listaEmpresasCadastradas[i].id
-        console.log("Código de ativação válido.");
-        break;
-      } else {
+    // Verificando se o email ja existe
+    for (let i = 0; i < listaEmailsCadastrados.length; i++) {
+      if (listaEmailsCadastrados[i].email == emailVar) {
+        console.log("Email inválido.");
         cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
+        mensagem_erro.innerHTML = "(Mensagem de erro para email inválido)";
         finalizarAguardar();
-      }
+        break;
+      } 
     }
 
     // Enviando o valor da nova input
@@ -156,7 +161,8 @@
         nomeServer: nomeVar,
         emailServer: emailVar,
         senhaServer: senhaVar,
-        idEmpresaVincularServer: idEmpresaVincular
+        cidadeServer: cidadeVar,
+        ufServer: ufVar
       }),
     })
       .then(function (resposta) {
@@ -186,18 +192,18 @@
     return false;
   }
 
-  // Listando empresas cadastradas 
+  // Listando usuarios cadastradas 
   function listar() {
-    fetch("/empresas/listar", {
+    fetch("/usuarios/listar", {
       method: "GET",
     })
       .then(function (resposta) {
-        resposta.json().then((empresas) => {
-          empresas.forEach((empresa) => {
-            listaEmpresasCadastradas.push(empresa);
+        resposta.json().then((usuarios) => {
+          usuarios.forEach((usuario) => {
+            listaEmailsCadastrados.push(usuario);
 
-            console.log("listaEmpresasCadastradas")
-            console.log(listaEmpresasCadastradas[0].codigo_ativacao)
+            console.log("listaEmailsCadastrados")
+            console.log(listaEmailsCadastrados[0].email)
           });
         });
       })

@@ -11,5 +11,8 @@ router.post("/cadastrar", function (req, res) {
 router.post("/autenticar", function (req, res) {
     usuarioController.autenticar(req, res);
 });
-
+router.get("/listar", function (req, res) {
+    // função a ser chamada quando acessar /usuarios/listar
+    usuarioController.listar(req, res);
+});
 module.exports = router;
