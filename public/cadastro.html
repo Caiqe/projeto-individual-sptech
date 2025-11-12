@@ -21,23 +21,23 @@
         <img src="./assets/icon/logoSite.png" alt="Logo Site" />
         <h2 class="nome-site">Roteirando</h2>
       </div>
-      <ul id="navbar">
+      <ul id="navbar" on>
+        <a class="button-navbar" href="./index.html">
+          <li class="content-button">
+            Inicio
+            <img
+              class="icon-navbar"
+              src="./assets/imgs/icons/house-line-thin.svg"
+              alt="icon login"
+            />
+          </li>
+        </a>
         <a class="button-navbar" href="./login.html">
           <li class="content-button">
             Login
             <img
               class="icon-navbar"
               src="./assets/imgs/icons/login.svg"
-              alt="icon login"
-            />
-          </li>
-        </a>
-        <a class="button-navbar" href="./cadastro.html">
-          <li class="content-button">
-            Cadastrar
-            <img
-              class="icon-navbar"
-              src="./assets/imgs/icons/user-plus.svg"
               alt="icon cadastrar"
             />
           </li>
@@ -55,7 +55,7 @@
     <div class="container">
       <img src="assets/imgs/imgCallToAction1.png" alt="" id="img-metade-tela" style="height: 920px; width: 50%;">
       <div class="card card-cadastro">
-        <h2>Bem-vindo!</h2>
+        <h2 id="titulo">Comece Já!</h2>
         
         <div class="formulario">
           <!--
@@ -63,31 +63,33 @@
                          Assim que inserir vá para o script abaixo.
                      -->
                          
-          <img src="./assets/icon/logoSite.png" style="width: 25px;">
+          <img src="./assets/icon/logoSite.png"  style="width: 100px; justify-self: center; align-self: center; ">
           
           <div class="campo">
             <span>Nome:</span>
-            <input id="nome_input" type="text" placeholder="Seu nome" />
+            <input id="nome_input" type="text" placeholder="Como você se chama?" />
           </div>
           <div class="campo">
             <span>E-mail:</span>
-            <input id="email_input" type="text" placeholder="meuemail@provedor.com" />
+            <input id="email_input" type="text" placeholder="email@email.com" />
+          </div>
+          <div id="campo-origem">
+            <div class="campo cidade">
+            <span>Cidade:</span>
+            <input id="cidade_input" type="text" placeholder="Qual cidade você mora?" />
+          </div>
+          <div class="campo uf">
+            <span>UF:</span>
+            <input id="uf_input" type="text" placeholder="Ex: SP" />
+          </div>
           </div>
           <div class="campo">
             <span>Senha:</span>
-            <input id="senha_input" type="password" placeholder="******" />
+            <input id="senha_input" type="password" placeholder="********" />
           </div>
           <div class="campo">
             <span>Confirmação da Senha:</span>
-            <input id="confirmacao_senha_input" type="password" placeholder="******" />
-          </div>
-          <div class="campo">
-            <span>Cidade:</span>
-            <input id="cidade_input" type="text" placeholder="Onde você nasceu?" />
-          </div>
-          <div class="campo">
-            <span>UF:</span>
-            <input id="uf_input" type="text" placeholder="Ex: SP" />
+            <input id="confirmacao_senha_input" type="password" placeholder="********" />
           </div>
           <button class="botao" onclick="cadastrar()">Cadastrar</button>
         </div>
