@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/viagem.css">
+    <title>Roteirando | Viagem</title>
+</head>
+<body onload="listarDestinos()">
+    <div class="container">
+        <header>
+      <div id="header-logo">
+        <img src="../assets/icon/logoSite.png" alt="Logo Site" />
+        <h2 class="nome-site">Roteirando</h2>
+        <h2 class="nome-usuario">Olá, <span>Usuario</span></h2>
+      </div>
+      <ul id="navbar" on>
+        <a class="page-atual" href="viagem.html">
+          <li class="content-button">
+            Viagens
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/house-line-thin.svg"
+              alt="icon login"
+            />
+          </li>
+        </a>
+        <a class="button-navbar" href="historico.html">
+          <li class="content-button">
+            Histórico
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+        <a class="button-navbar" href="./login.html">
+          <li class="content-button">
+            Dashboard
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+        <a class="button-navbar" href="./login.html">
+          <li class="content-button">
+            Quiz
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+        <a class="button-navbar" href="../index.html">
+          <li class="content-button">
+            Sair
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+      </ul>
+    </header>
+  <!--header fim-->
+
+  <section id="viagem-atual">
+    <div class="formulario">
+        <h2>Planeje sua Viajem!</h2>
+        <div class="campo">
+            <label >Escolha seu destino:</label>
+            <select  id="select_destino" >
+                <option value="#" selected disabled>Selecione</option>
+            </select>
+        </div>
+        <div class="inputs-datas">
+            <div class="campo data">
+                <label>Data de Ida:</label><br> <input type="date" id="input_dataIda">
+            </div>
+            <div class="campo data">
+                <label>Data de Volta:</label><br><input type="date" id="input_dataVolta">
+            </div>
+        </div>
+        <div class="campo">
+            <label>Quanto pretende gastar:</label> <input type="number" id="input_metaOrcamento" placeholder="R$999999,99"><br>
+        </div>
+        <div class="campo">
+            <label>Quanto você já tem:</label> <input type="number" id="input_orcamento" placeholder="R$999999,99"><br>
+        </div>
+        <div class="campo">
+            <label>O que planeja fazer?</label><br>
+            <textarea onkeyup="validaAnotacao()" id="input_anotacoes" placeholder="Hora de Planejar! Algo para anotar?"></textarea>
+            <span id="contador_caracteres"><span id="numeros_caracteres">0</span>/500</span>
+        </div>
+        <button onclick="cadastrar()">Cadastrar Viagem</button>
+    </div>
+    <div class="alerta_erro">
+      <div class="card_erro" id="cardErro">
+        <span id="mensagem_erro"></span>
+      </div>
+    </div>
+  </section>
+    </div>
+</body>
+<script>
+var tamanhoAnotacao = 0;
+var destinosBD = [];
+var validaCampos = false;
+var erroMsg = '';
+
+function cadastrar() {
+    // aguardar();
+    validarCampos();
+    
+
+    // Verificando se há algum campo em branco
+    if(!validaCampos){
+      console.log('estou no if de cadastrar.');
+      return;
+    }else{
+      var id_usuarioVar = sessionStorage.ID_USUARIO;
+      var id_destinoVar = select_destino.value;
+      var dataIdaVar = input_dataIda.value;
+      var dataVoltaVar = input_dataVolta.value;
+      var meta_orcamentoVar = input_metaOrcamento.value;
+      var orcamento_arrecadadoVar = input_orcamento.value
+
+      // Enviando o valor da nova input
+    fetch("/viagens/cadastrar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // crie um atributo que recebe o valor recuperado aqui
+        // Agora vá para o arquivo routes/usuario.js
+        fk_usuario: id_usuarioVar,
+        fk_destino: id_destinoVar,
+        dtIda: dataIdaVar,
+        dtVolta: dataVoltaVar,
+        meta_orcamento: meta_orcamentoVar,
+        orcamento_arrecadado: orcamento_arrecadadoVar
+      }),
+    })
+      .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+          cardErro.style.display = "block";
+
+          mensagem_erro.innerHTML =
+            "Cadastro realizado com sucesso! ";
+
+          setTimeout(() => {
+            window.location = "dashboard.html";
+          }, "2000");
+
+        } else {
+          throw "Houve um erro ao tentar realizar o cadastro!";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
+    } 
+  }
+
+function sumirMensagem() {
+    cardErro.style.display = "none";
+  }
+
+function validarCampos(){
+  validaCampos = true;
+  erroMsg = '';
+  var ida = input_dataIda.value;
+  var volta = input_dataVolta.value;
+  if(select_destino.value == '#'){
+    validaCampos = false;
+    erroMsg += '<br>- Selecione um destino.';
+  } 
+  if(input_dataIda.value == '' || input_dataVolta.value == ''){
+    validaCampos = false;
+    erroMsg += '<br>- Informe datas válidas para a viagem.';
+  }
+  if(ida>volta){
+    validaCampos = false;
+    erroMsg += '<br>- Data de volta não pode antes da ida.';
+  }
+  if(Number(input_metaOrcamento.value)<1){
+    validaCampos = false;
+    erroMsg += '<br>- A meta não pode ser menor que um.';
+  }
+  if(Number(input_orcamento.value)<1){
+    validaCampos = false;
+    erroMsg += '<br>- O valor atual não pode ser menor que um.';
+  }
+  if(Number(tamanhoAnotacao)>500){
+    validaCampos = false;
+    erroMsg += '<br>- Sua anotação ultrapassa o limite.';
+  }
+  if(validaCampos == false){
+    cardErro.style.display = "block";
+      mensagem_erro.innerHTML = erroMsg;
+    }
+      console.log(input_dataIda.value)
+      setTimeout(sumirMensagem, 10000);
+}
+    function validaAnotacao(){
+        var numCaracteres = input_anotacoes.value.length;
+        numeros_caracteres.innerHTML = numCaracteres;
+        if(numCaracteres>500){
+            contador_caracteres.style.color = 'red';
+        }else{
+            contador_caracteres.style.color = 'white';
+        }
+        tamanhoAnotacao = numCaracteres;
+    }
+    function listarDestinos(){
+        fetch("/destinos/listar", {
+      method: "GET",
+    })
+      .then(function (resposta) {
+        resposta.json().then((destinos) => {
+          destinos.forEach((destino) => {
+            destinosBD.push(destino);
+            carregarDestinos();
+          });
+        });
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
+    }
+    function carregarDestinos() {
+    select_destino.innerHTML = "<option value='#' selected>Selecione</option>";
+
+    if (destinosBD.length < 1) {
+        select_destino.innerHTML += "<option value='#'>Nenhum destino encontrado.</option>";
+    } else {
+        destinosBD.forEach(destino => {
+            select_destino.innerHTML += `<option value='${destino.id_destino}'>${destino.nome}</option>`;
+        });
+    }
+}
+</script>
+</html>

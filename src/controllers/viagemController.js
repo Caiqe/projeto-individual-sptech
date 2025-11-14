@@ -28,7 +28,9 @@ function cadastrar(req, res) {
   var fk_destino = req.body.fk_destino;
   var dtIda = req.body.dtIda;
   var dtVolta = req.body.dtVolta;
-      viagemModel.cadastrar(fk_usuario, fk_destino, dtIda, dtVolta).then((resultado) => {
+  var meta_orcamento = req.body.meta_orcamento;
+  var orcamento_arrecadado = req.body.orcamento_arrecadado;
+      viagemModel.cadastrar(fk_usuario, fk_destino, dtIda, dtVolta, meta_orcamento, orcamento_arrecadado).then((resultado) => {
         res.status(201).json(resultado);
       }); 
 }
