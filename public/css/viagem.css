@@ -120,8 +120,8 @@ header{
     align-items: center;
     width: 100%;
 }
-.formulario{
-    display: flex;
+#formulario{
+    display: none;
     flex-direction: column;
     color: white;
     background-color: #2F4F4F;
@@ -168,6 +168,27 @@ button:hover{
     border: solid 2px #BEE7B8;
     cursor: pointer;
 }
+#minha_viagem{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-minhaviagem{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #2F4F4F;
+    width: 80%;
+    align-items: center;
+    border-radius: 30px 5px;
+    padding: 25px;
+    color: white;
+}
+.img-destino{
+    width: 65%;
+    border-radius: 30px;
+}
 .data{
     width: 50%;
     
@@ -208,5 +229,64 @@ button:hover{
 .card_erro #mensagem_erro{
   font-weight: 500;
   font-size: 20px;
+}
+#section-viagens{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+.title-historico{
+    margin-top: 75px;
+    background-color: #2F4F4F;
+    color: #F2F0EF;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-radius: 20px;
+}
+#lista_viagens{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+    gap: 25px;
+}
+.card-viagem{
+    display: flex;
+    background-color: #2F4F4F;
+    width: 100%;
+    border-radius: 30px;
+    color: white;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 10px;
+}
+.card-viagem:hover{
+    transition: 0.7s;
+    scale: 102%;
+    cursor: pointer;
+}
+.card-viagem img{
+    width: 35px;
+    border-radius: 50%;
+}
+.nome-destino{
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+}
+.nome-destino h2{
+    font-size: 18px;
+    font-style: italic;
+}
+.datas-viagem, .valores-viagem{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.anotacao{
+    width: 60%;
+    align-self: center;
+    justify-self: center;
 }
 

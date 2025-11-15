@@ -6,13 +6,13 @@
     <link rel="stylesheet" href="../css/viagem.css">
     <title>Roteirando | Viagem</title>
 </head>
-<body onload="listarDestinos()">
+<body onload="listaViagens()">
     <div class="container">
         <header>
       <div id="header-logo">
         <img src="../assets/icon/logoSite.png" alt="Logo Site" />
         <h2 class="nome-site">Roteirando</h2>
-        <h2 class="nome-usuario">Olá, <span>Usuario</span></h2>
+        <h2 class="nome-usuario">Olá, <span id="nome_usuario">Usuario</span></h2>
       </div>
       <ul id="navbar" on>
         <a class="page-atual" href="viagem.html">
@@ -70,7 +70,7 @@
   <!--header fim-->
 
   <section id="viagem-atual">
-    <div class="formulario">
+    <div id="formulario">
         <h2>Planeje sua Viajem!</h2>
         <div class="campo">
             <label >Escolha seu destino:</label>
@@ -99,6 +99,9 @@
         </div>
         <button onclick="cadastrar()">Cadastrar Viagem</button>
     </div>
+    <div id="minha_viagem" style="display: none;">
+      
+    </div>
     <div class="alerta_erro">
       <div class="card_erro" id="cardErro">
         <span id="mensagem_erro"></span>
@@ -108,10 +111,69 @@
     </div>
 </body>
 <script>
+nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 var tamanhoAnotacao = 0;
 var destinosBD = [];
 var validaCampos = false;
 var erroMsg = '';
+var viagemAtual = [];
+
+function verificaViagens(){
+  if(viagemAtual.length<1){
+    listarDestinos();
+    formulario.style.display = 'flex';
+    console.log('Não existem viagens encontradas.')
+  }else{
+    minha_viagem.style.display = 'flex';
+    minha_viagem.innerHTML = `<div class="card-minhaviagem">
+        <img  class="img-destino" src="${viagemAtual[0].imagem_destino}">
+        <div class="nome-destino">
+        <h2>Destino: ${viagemAtual[0].nome} - <span>${(viagemAtual[0].uf).toUpperCase()}</span></h2>
+        </div>
+        <div class="datas-viagem">
+          <label >Data ida:</label>
+          <span>${(viagemAtual[0].dtIda).substring(0,10)}</span> | 
+          <label >Data volta:</label>
+          <span>${(viagemAtual[0].dtVolta).substring(0,10)}</span>
+        </div>
+        <div class="valores-viagem">
+          <label >Meta:</label>
+          <span>${Number(viagemAtual[0].meta_orcamento).toLocaleString('pt-br',{style:'currency', currency: 'BRL'})}</span> | 
+          <label >Arrecadado:</label>
+          <span>${Number(viagemAtual[0].orcamento_arrecadado).toLocaleString('pt-br',{style:'currency', currency: 'BRL'})}</span>
+        </div>
+        <label >Anotações:</label>
+        <div class="anotacao">
+          ${(viagemAtual[0].anotacao == null ? 'Nenhuma anotação':viagemAtual[0].anotacao) }
+        </div>
+        <button >Marcar como Concluída</button>
+      </div>`;
+    console.log('Existem viagens encontradas.')
+  }
+}
+
+function listaViagens(){
+        fetch("/viagens/buscarAtual", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fk_usuario: sessionStorage.ID_USUARIO
+      }),
+    })
+      .then(function (resposta) {
+        resposta.json().then((viagens) => {
+          viagens.forEach((viagem) => {
+            viagemAtual.push(viagem);
+          });
+          verificaViagens();
+        });
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      }); 
+}
 
 function cadastrar() {
     // aguardar();
@@ -128,7 +190,8 @@ function cadastrar() {
       var dataIdaVar = input_dataIda.value;
       var dataVoltaVar = input_dataVolta.value;
       var meta_orcamentoVar = input_metaOrcamento.value;
-      var orcamento_arrecadadoVar = input_orcamento.value
+      var orcamento_arrecadadoVar = input_orcamento.value;
+      var anotacaoVar = input_anotacoes.value;
 
       // Enviando o valor da nova input
     fetch("/viagens/cadastrar", {
@@ -144,7 +207,8 @@ function cadastrar() {
         dtIda: dataIdaVar,
         dtVolta: dataVoltaVar,
         meta_orcamento: meta_orcamentoVar,
-        orcamento_arrecadado: orcamento_arrecadadoVar
+        orcamento_arrecadado: orcamento_arrecadadoVar,
+        anotacao: anotacaoVar
       }),
     })
       .then(function (resposta) {
@@ -157,7 +221,7 @@ function cadastrar() {
             "Cadastro realizado com sucesso! ";
 
           setTimeout(() => {
-            window.location = "dashboard.html";
+            window.location = "viagem.html";
           }, "2000");
 
         } else {
@@ -189,7 +253,7 @@ function validarCampos(){
   }
   if(ida>volta){
     validaCampos = false;
-    erroMsg += '<br>- Data de volta não pode antes da ida.';
+    erroMsg += '<br>- Data de volta não pode ser antes da ida.';
   }
   if(Number(input_metaOrcamento.value)<1){
     validaCampos = false;

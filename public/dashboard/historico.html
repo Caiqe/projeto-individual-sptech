@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/viagem.css">
+    <title>Roteirando | Viagem</title>
+</head>
+<body onload="listarViagens()">
+    <div class="container">
+        <header>
+      <div id="header-logo">
+        <img src="../assets/icon/logoSite.png" alt="Logo Site" />
+        <h2 class="nome-site">Roteirando</h2>
+        <h2 class="nome-usuario">Olá, <span>Usuario</span></h2>
+      </div>
+      <ul id="navbar" on>
+        <a class="button-navbar" href="viagem.html">
+          <li class="content-button">
+            Viagens
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/house-line-thin.svg"
+              alt="icon login"
+            />
+          </li>
+        </a>
+        <a class="page-atual" href="./historico.html">
+          <li class="content-button">
+            Histórico
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+        <a class="button-navbar" href="./login.html">
+          <li class="content-button">
+            Dashboard
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+        <a class="button-navbar" href="./login.html">
+          <li class="content-button">
+            Quiz
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+        <a class="button-navbar" href="../index.html">
+          <li class="content-button">
+            Sair
+            <img
+              class="icon-navbar"
+              src="../assets/imgs/icons/login.svg"
+              alt="icon cadastrar"
+            />
+          </li>
+        </a>
+      </ul>
+    </header>
+  <!--header fim-->
+    <section id="section-viagens">
+        <h2 class="title-historico">Histórico</h2>
+        <div id="lista_viagens">
+            
+        </div>
+        <div id="info_viagem" style="display: none;"></div>
+    </section>
+    </div>
+</body>
+<script>
+    var viagensBD = []
+    function listarViagens(){
+        fetch("/viagens/buscar", {
+      method: "POST",
+      headers:{
+        "Content-Type": "application/json"
+      },body: JSON.stringify({
+      id_usuario: sessionStorage.ID_USUARIO
+    })
+    })
+      .then(function (resposta) {
+        resposta.json().then((viagens) => {
+          viagens.forEach((viagem) => {
+            viagensBD.push(viagem);
+          });
+            carregarViagens();
+            console.log(viagensBD)
+        });
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
+    }
+    function carregarViagens() {
+        lista_viagens.innerHTML = '';
+    if (viagensBD.length < 1) {
+        lista_viagens.innerHTML += "<h2>Nenhuma viagem encontrada</h2>";
+    } else {
+        viagensBD.forEach(viagem => {
+            lista_viagens.innerHTML += `<div class="card-viagem">
+                <img src="${viagem.imagem_destino}">
+                <span>Destino: ${viagem.nome} - ${viagem.uf}</span>
+                <span>Data Ida: ${(viagem.dtIda).substring(0,10)}</span>
+                <span>Data Volta: ${(viagem.dtVolta).substring(0,10)}</span>
+                <span>Status: ${viagem.titulo}</span>
+            </div>`;
+        });
+    }
+}
+</script>
+</html>

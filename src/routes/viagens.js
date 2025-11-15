@@ -13,10 +13,10 @@ router.get("/listar", function (req, res) {
     viagemController.listar(req, res);
 });
 
-router.get("/buscar", function (req, res) {
+router.post("/buscar", function (req, res) {
     viagemController.buscarPorUsuario(req, res);
 });
-router.get("/buscarAtual", function (req, res) {
+router.post("/buscarAtual", function (req, res) {
     viagemController.buscarViagemAtual(req, res);
 });
 

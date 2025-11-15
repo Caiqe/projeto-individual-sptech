@@ -2,7 +2,7 @@ var viagemModel = require("../models/viagemModel");
 
 
 function buscarPorUsuario(req, res) {
-  var fk_usuario = req.body.fk_usuario;
+  var fk_usuario = req.body.id_usuario;
 
   viagemModel.buscarPorUsuario(fk_usuario).then((resultado) => {
     res.status(200).json(resultado);
@@ -30,7 +30,8 @@ function cadastrar(req, res) {
   var dtVolta = req.body.dtVolta;
   var meta_orcamento = req.body.meta_orcamento;
   var orcamento_arrecadado = req.body.orcamento_arrecadado;
-      viagemModel.cadastrar(fk_usuario, fk_destino, dtIda, dtVolta, meta_orcamento, orcamento_arrecadado).then((resultado) => {
+  var anotacao = req.body. anotacao;
+      viagemModel.cadastrar(fk_usuario, fk_destino, dtIda, dtVolta, meta_orcamento, orcamento_arrecadado, anotacao).then((resultado) => {
         res.status(201).json(resultado);
       }); 
 }
