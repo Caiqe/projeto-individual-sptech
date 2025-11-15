@@ -144,12 +144,45 @@ function verificaViagens(){
         </div>
         <label >Anotações:</label>
         <div class="anotacao">
-          ${(viagemAtual[0].anotacao == null ? 'Nenhuma anotação':viagemAtual[0].anotacao) }
+          ${(viagemAtual[0].anotacao == null ? 'Nenhuma anotação.':viagemAtual[0].anotacao) }
         </div>
-        <button >Marcar como Concluída</button>
+        <button onclick="concluirViagem()">Marcar como Concluída</button>
       </div>`;
     console.log('Existem viagens encontradas.')
   }
+}
+
+function concluirViagem(){
+  fetch("/viagens/concluir", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_viagem: viagemAtual[0].id_viagem
+      }),
+    })
+    .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+          cardErro.style.display = "block";
+
+          mensagem_erro.innerHTML =
+            "Atualizado com sucesso! ";
+
+          setTimeout(() => {
+            window.location = "viagem.html";
+          }, "2000");
+
+        } else {
+          throw "Houve um erro ao tentar realizar atualização";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      }); 
+    
 }
 
 function listaViagens(){

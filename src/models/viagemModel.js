@@ -23,6 +23,12 @@ function buscarPorUsuario(fk_usuario) {
   return database.executar(instrucaoSql);
 }
 
+function concluirViagem(id_viagem) {
+  var instrucaoSql = `UPDATE viagem SET fk_status = 2 WHERE id_viagem = ${id_viagem}`;
+
+  return database.executar(instrucaoSql);
+}
+
 function buscarViagemAtual(fk_usuario) {
   var instrucaoSql = `SELECT v.*, d.imagem_destino, d.nome, d.descricao, d.uf, d.regiao FROM viagem v JOIN destino d ON d.id_destino = v.fk_destino WHERE v.fk_usuario = ${fk_usuario} AND v.fk_status = 1;`;
 
@@ -33,5 +39,6 @@ module.exports = {
     cadastrar,
     listar, 
     buscarPorUsuario,
-    buscarViagemAtual
+    buscarViagemAtual,
+    concluirViagem
 };

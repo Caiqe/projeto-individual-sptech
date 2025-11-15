@@ -22,6 +22,13 @@ function listar(req, res) {
     res.status(200).json(resultado);
   });
 }
+function concluirViagem(req, res) {
+  var id_viagem = req.body.id_viagem;
+
+      viagemModel.concluirViagem(id_viagem).then((resultado) => {
+        res.status(201).json(resultado);
+      }); 
+}
 
 function cadastrar(req, res) {
   var fk_usuario = req.body.fk_usuario;
@@ -41,5 +48,6 @@ module.exports = {
     listar,
     cadastrar,
     buscarPorUsuario,
-    buscarViagemAtual
+    buscarViagemAtual,
+    concluirViagem
 }

@@ -19,6 +19,9 @@ router.post("/buscar", function (req, res) {
 router.post("/buscarAtual", function (req, res) {
     viagemController.buscarViagemAtual(req, res);
 });
+router.put("/concluir", function (req, res) {
+    viagemController.concluirViagem(req, res);
+});
 
 
 module.exports = router;
