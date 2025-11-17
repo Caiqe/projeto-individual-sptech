@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/viagem.css">
-    <title>Roteirando | Viagem</title>
+    <link rel="icon" href="../assets/icon/logoSite.png" />
+    <title>Roteirando | Histórico</title>
 </head>
 <body onload="listarViagens()">
     <div class="container">
@@ -12,7 +13,7 @@
       <div id="header-logo">
         <img src="../assets/icon/logoSite.png" alt="Logo Site" />
         <h2 class="nome-site">Roteirando</h2>
-        <h2 class="nome-usuario">Olá, <span>Usuario</span></h2>
+        <h2 class="nome-usuario">Olá, <span id="nome_usuario">Usuario</span></h2>
       </div>
       <ul id="navbar" on>
         <a class="button-navbar" href="viagem.html">
@@ -35,7 +36,7 @@
             />
           </li>
         </a>
-        <a class="button-navbar" href="./login.html">
+        <a class="button-navbar" href="./dashboard.html">
           <li class="content-button">
             Dashboard
             <img
@@ -45,9 +46,9 @@
             />
           </li>
         </a>
-        <a class="button-navbar" href="./login.html">
+        <a class="button-navbar" href="./destino.html">
           <li class="content-button">
-            Quiz
+            Destinos
             <img
               class="icon-navbar"
               src="../assets/imgs/icons/login.svg"
@@ -78,7 +79,9 @@
     </div>
 </body>
 <script>
+    nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
     var viagensBD = []
+    
     function listarViagens(){
         fetch("/viagens/buscar", {
       method: "POST",
@@ -104,7 +107,7 @@
     function carregarViagens() {
         lista_viagens.innerHTML = '';
     if (viagensBD.length < 1) {
-        lista_viagens.innerHTML += "<h2>Nenhuma viagem encontrada</h2>";
+        lista_viagens.innerHTML += "<h2 class='nenhuma-viagem'>Nenhuma viagem encontrada</h2>";
     } else {
         viagensBD.forEach(viagem => {
             lista_viagens.innerHTML += `<div class="card-viagem">

@@ -11,7 +11,7 @@ function listar() {
 
 function cadastrar(fk_usuario,fk_destino,dtIda,dtVolta, meta_orcamento, orcamento_arrecadado, anotacao) {
     var instrucao = `
-        INSERT INTO viagem (fk_usuario,fk_destino,dtIda,dtVolta, meta_orcamento, orcamento_arrecadado, anotacao,fk_status) VALUES (${fk_usuario},${fk_destino},'${dtIda}','${dtVolta}',${meta_orcamento},${orcamento_arrecadado}, '${anotacao}', 1);
+        INSERT INTO viagem (id_viagem, fk_usuario,fk_destino,dtIda,dtVolta, meta_orcamento, orcamento_arrecadado, anotacao,fk_status) VALUES (default,${fk_usuario},${fk_destino},'${dtIda}','${dtVolta}',${meta_orcamento},${orcamento_arrecadado}, '${anotacao}', 1);
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);

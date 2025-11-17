@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../assets/icon/logoSite.png" />
+    <link rel="stylesheet" href="../css/viagem.css" />
+    <title>Roteirando | Destinos</title>
+  </head>
+  <body onload="listarDestinos()">
+    <div class="container">
+      <header>
+        <div id="header-logo">
+          <img src="../assets/icon/logoSite.png" alt="Logo Site" />
+          <h2 class="nome-site">Roteirando</h2>
+          <h2 class="nome-usuario">
+            Olá, <span id="nome_usuario">Usuario</span>
+          </h2>
+        </div>
+        <ul id="navbar" on>
+          <a class="button-navbar" href="viagem.html">
+            <li class="content-button">
+              Viagens
+              <img
+                class="icon-navbar"
+                src="../assets/imgs/icons/house-line-thin.svg"
+                alt="icon login"
+              />
+            </li>
+          </a>
+          <a class="button-navbar" href="./historico.html">
+            <li class="content-button">
+              Histórico
+              <img
+                class="icon-navbar"
+                src="../assets/imgs/icons/login.svg"
+                alt="icon cadastrar"
+              />
+            </li>
+          </a>
+          <a class="button-navbar" href="./dashboard.html">
+            <li class="content-button">
+              Dashboard
+              <img
+                class="icon-navbar"
+                src="../assets/imgs/icons/login.svg"
+                alt="icon cadastrar"
+              />
+            </li>
+          </a>
+          <a class="page-atual" href="./destino.html">
+            <li class="content-button">
+              Destinos
+              <img
+                class="icon-navbar"
+                src="../assets/imgs/icons/login.svg"
+                alt="icon cadastrar"
+              />
+            </li>
+          </a>
+          <a class="button-navbar" href="../index.html">
+            <li class="content-button">
+              Sair
+              <img
+                class="icon-navbar"
+                src="../assets/imgs/icons/login.svg"
+                alt="icon cadastrar"
+              />
+            </li>
+          </a>
+        </ul>
+      </header>
+      <section id="section_destinos">
+        
+      </section>
+    </div>
+  </body>
+  <script>
+    destinosBD = [];
+    nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+    function listarDestinos(){
+        fetch("/destinos/listar", {
+      method: "GET",
+    })
+      .then(function (resposta) {
+        resposta.json().then((destinos) => {
+          destinos.forEach((destino) => {
+            destinosBD.push(destino);
+        });
+        carregarDestinos();
+        });
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      });
+    }
+    function carregarDestinos() {
+
+
+    if (destinosBD.length < 1) {
+        section_destinos.innerHTML += "<h2>Nenhum destino encontrado.</h2>";
+    } else {
+        destinosBD.forEach(destino => {
+            section_destinos.innerHTML += `<div class="card-destino">
+            <img src="${destino.imagem_destino}" alt="imagem destino">
+            <h2>${destino.nome} - <span>${destino.uf}</span></h2>
+            <h3>Descrição:</h3>
+            <p>${destino.descricao}</p>
+        </div>`;
+        });
+    }
+}
+  </script>
+</html>

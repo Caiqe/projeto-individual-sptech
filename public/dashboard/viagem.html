@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/viagem.css">
+    <link rel="icon" href="../assets/icon/logoSite.png" />
     <title>Roteirando | Viagem</title>
 </head>
 <body onload="listaViagens()">
@@ -35,7 +36,7 @@
             />
           </li>
         </a>
-        <a class="button-navbar" href="./login.html">
+        <a class="button-navbar" href="./dashboard.html">
           <li class="content-button">
             Dashboard
             <img
@@ -45,9 +46,9 @@
             />
           </li>
         </a>
-        <a class="button-navbar" href="./login.html">
+        <a class="button-navbar" href="./destino.html">
           <li class="content-button">
-            Quiz
+            Destinos
             <img
               class="icon-navbar"
               src="../assets/imgs/icons/login.svg"
@@ -325,8 +326,8 @@ function validarCampos(){
         resposta.json().then((destinos) => {
           destinos.forEach((destino) => {
             destinosBD.push(destino);
-            carregarDestinos();
           });
+          carregarDestinos();
         });
       })
       .catch(function (resposta) {

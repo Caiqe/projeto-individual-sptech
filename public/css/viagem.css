@@ -23,6 +23,8 @@ header{
     flex-direction: column;
     justify-content: center;
     gap: 100px;
+    position: fixed;
+    width: 350px;
 }
 #header-logo{
     display: flex;
@@ -119,6 +121,11 @@ header{
     justify-content: center;
     align-items: center;
     width: 100%;
+    margin-left: 350px;
+    margin-top: 5px;
+}
+.nenhuma-viagem{
+    color: black;
 }
 #formulario{
     display: none;
@@ -180,6 +187,7 @@ button:hover{
     gap: 10px;
     background-color: #2F4F4F;
     width: 80%;
+    margin-top: 125px;
     align-items: center;
     border-radius: 30px 5px;
     padding: 25px;
@@ -235,6 +243,7 @@ button:hover{
     flex-direction: column;
     width: 100%;
     align-items: center;
+    margin-left: 350px;
 }
 .title-historico{
     margin-top: 75px;
@@ -264,7 +273,8 @@ button:hover{
 
 .card-viagem img{
     width: 35px;
-    border-radius: 50%;
+    border-radius: 10px;
+    border: solid 2px white;
 }
 .nome-destino{
     display: flex;
@@ -284,5 +294,43 @@ button:hover{
     width: 60%;
     align-self: center;
     justify-self: center;
+}
+#section_destinos{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 350px;
+    width: 100%;
+    gap: 10px;
+}
+.card-destino{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background-color: #2F4F4F;
+    padding: 15px;
+    width: 30%;
+    height: 550px;
+    border-radius: 20px 0px;
+}
+.card-destino img{
+    width: 90%;
+    border-radius:  20px 0px;
+    border: solid 2px white;
+
+}
+.card-destino h3{
+    color: white;
+}
+.card-destino p{
+    padding: 10px;
+    height: 150px;
+    background-color: #BEE7B8;
+    border-radius: 10px;
+    
 }
 
