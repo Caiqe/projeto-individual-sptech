@@ -127,32 +127,95 @@ function verificaViagens(){
   }else{
     minha_viagem.style.display = 'flex';
     minha_viagem.innerHTML = `<div class="card-minhaviagem">
+      <h2 class='title-viagem'>Sua Próxima viagem:</h2>
         <img  class="img-destino" src="${viagemAtual[0].imagem_destino}">
         <div class="nome-destino">
         <h2>Destino: ${viagemAtual[0].nome} - <span>${(viagemAtual[0].uf).toUpperCase()}</span></h2>
         </div>
         <div class="datas-viagem">
           <label >Data ida:</label>
-          <span>${(viagemAtual[0].dtIda).substring(0,10)}</span> | 
+          <input id="ipt_dtIda" type="date" value="${(viagemAtual[0].dtIda).substring(0,10)}">  
           <label >Data volta:</label>
-          <span>${(viagemAtual[0].dtVolta).substring(0,10)}</span>
+          <input id="ipt_dtVolta" type="date" value="${(viagemAtual[0].dtVolta).substring(0,10)}">
         </div>
         <div class="valores-viagem">
           <label >Meta:</label>
-          <span>${Number(viagemAtual[0].meta_orcamento).toLocaleString('pt-br',{style:'currency', currency: 'BRL'})}</span> | 
+          <input id="ipt_orcamento" type="number" value="${Number(viagemAtual[0].meta_orcamento)}">  
           <label >Arrecadado:</label>
-          <span>${Number(viagemAtual[0].orcamento_arrecadado).toLocaleString('pt-br',{style:'currency', currency: 'BRL'})}</span>
+          <input id="ipt_arrecadado" type="number" value="${Number(viagemAtual[0].orcamento_arrecadado)}">
         </div>
-        <label >Anotações:</label>
-        <div class="anotacao">
-          ${(viagemAtual[0].anotacao == null ? 'Nenhuma anotação.':viagemAtual[0].anotacao) }
+        <h2>Anotações:</h2>
+        <textarea id="ipt_anotacao" class="anotacao" > ${(viagemAtual[0].anotacao == null ? 'Nenhuma anotação.':viagemAtual[0].anotacao) }</textarea>
+        <div class='div-buttons'>
+          <button onclick="atualizarViagem()">Atualizar Viagem</button>
+          <button onclick="concluirViagem()">Marcar como Concluída</button>
         </div>
-        <button onclick="concluirViagem()">Marcar como Concluída</button>
       </div>`;
     console.log('Existem viagens encontradas.')
   }
 }
+function atualizarViagem(){
+  var dtIdaVar = ipt_dtIda.value;
+  var dtVoltaVar = ipt_dtVolta.value;
+  var orcamento = Number(ipt_orcamento.value);
+  var arrecadado = Number(ipt_arrecadado.value);
+  var anotacaoVar = ipt_anotacao.value;
+  var msgErro = '';
+  validaCampos = true;
 
+  if(dtIdaVar>dtVoltaVar || ipt_dtIda.value == '' || ipt_dtVolta.value==''){
+    msgErro +='<br>- Informe valores válidos para as datas.';
+    validaCampos = false;
+  }
+  if(anotacaoVar.length>500){
+    msgErro +='<br>- Informe menos de caracteres para anotação';
+    validaCampos = false;
+  }
+  if(orcamento<1 || orcamento>999999.99 || arrecadado<1 || arrecadado>999999.99){
+    msgErro +='<br>- Informe valores válidos para Meta e Arrecadado.'
+    validaCampos = false;
+  }
+  if(validaCampos == false){
+    cardErro.style.display = "block";
+    mensagem_erro.innerHTML = msgErro;
+    setTimeout(sumirMensagem, 10000);
+  }else{
+    fetch("/viagens/atualizar", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_viagem: viagemAtual[0].id_viagem,
+        dtIda: dtIdaVar,
+        dtVolta: dtVoltaVar,
+        meta_orcamento: Number(orcamento),
+        orcamento_arrecadado: Number(arrecadado),
+        anotacao: anotacaoVar
+      }),
+    })
+    .then(function (resposta) {
+        console.log("resposta: ", resposta);
+
+        if (resposta.ok) {
+          cardErro.style.display = "block";
+
+          mensagem_erro.innerHTML =
+            "Atualizado com sucesso! ";
+
+          setTimeout(() => {
+            window.location = "viagem.html";
+          }, "2000");
+
+        } else {
+          throw "Houve um erro ao tentar realizar atualização";
+        }
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      }); 
+  }
+}
 function concluirViagem(){
   fetch("/viagens/concluir", {
       method: "PUT",
@@ -268,15 +331,13 @@ function cadastrar() {
     } 
   }
 
-function sumirMensagem() {
+function sumirMensagem(dtIda,dtVolta, meta, arrecadado) {
     cardErro.style.display = "none";
   }
 
 function validarCampos(){
   validaCampos = true;
   erroMsg = '';
-  var ida = input_dataIda.value;
-  var volta = input_dataVolta.value;
   if(select_destino.value == '#'){
     validaCampos = false;
     erroMsg += '<br>- Selecione um destino.';
@@ -297,6 +358,14 @@ function validarCampos(){
     validaCampos = false;
     erroMsg += '<br>- O valor atual não pode ser menor que um.';
   }
+  if(Number(input_metaOrcamento.value)>999999.99){
+    validaCampos = false;
+    erroMsg += '<br>- A meta não pode ser maior que 999999,99.';
+  }
+  if(Number(input_orcamento.value)>999999.99){
+    validaCampos = false;
+    erroMsg += '<br>- O valor atual não pode ser maior que 999999,99.';
+  }
   if(Number(tamanhoAnotacao)>500){
     validaCampos = false;
     erroMsg += '<br>- Sua anotação ultrapassa o limite.';
@@ -305,7 +374,6 @@ function validarCampos(){
     cardErro.style.display = "block";
       mensagem_erro.innerHTML = erroMsg;
     }
-      console.log(input_dataIda.value)
       setTimeout(sumirMensagem, 10000);
 }
     function validaAnotacao(){

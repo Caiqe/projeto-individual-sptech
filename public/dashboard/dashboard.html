@@ -8,7 +8,7 @@
     <title>Roteirando | Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body onload="listarKpis(), obterDados()">
     <div class="container">
         <header>
         <div id="header-logo">
@@ -70,29 +70,18 @@
         </ul>
     </header>
   <!--header fim-->
-  <section class="section-kpis">
-      <div class="kpi">
-        <label >Dias restantes próxima viagem:</label>
-        <span>10</span>
-      </div>
-      <div class="kpi">
-        <label >Próximo Destino:</label>
-        <span>Rio De Janeiro</span>
-      </div>
-      <div class="kpi">
-        <label >Para alcançar a meta:</label>
-        <span>1000</span>
-      </div>
+  <section id="section_kpis">
+      
   </section>
   </div>
   <div class="container">
     <section class="section-graficos">
       <div class="grafico">
-        <label >Regiões mais Visitadas:</label>
+        <label class="label-grafico">Regiões mais Visitadas:</label>
         <canvas id="myChart1"></canvas>
       </div>
       <div class="grafico barra">
-        <label >Média de Orçamento por região:</label>
+        <label class="label-grafico">Média de Orçamento por região:</label>
         <canvas id="myChart2"></canvas>
       </div>
     </section>
@@ -100,16 +89,81 @@
 </body>
 <script>
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+  kpisBD = [];
+
+  function listarKpis(){
+    fetch("/viagens/buscarKPI", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_usuario: sessionStorage.ID_USUARIO
+      }),
+    })
+      .then(function (resposta) {
+        resposta.json().then((kpis) => {
+          kpis.forEach((kpi) => {
+            kpisBD.push(kpi);
+          });
+          verificaKpis();
+        });
+      })
+      .catch(function (resposta) {
+        console.log(`#ERRO: ${resposta}`);
+      }); 
+  }
+  function verificaKpis(){
+    if(kpisBD.length<1){
+      section_kpis.innerHTML = '<h2 style="color: black;">Comece a planejar sua viagem para ver as KPIs</h2>';
+    }else{
+      const umDia = 1000*60*60*24
+      var dataAtual = new Date()
+      var dataViagem = new Date(kpisBD[0].dtIda)
+      var diasRestantes = ( dataViagem - dataAtual ) / umDia;
+      
+      section_kpis.innerHTML = `<div class="kpi">
+        <label >Dias faltantes próxima viagem:</label>
+        <span>${(diasRestantes).toFixed()}</span>
+      </div>
+      <div class="kpi">
+        <label >Próximo Destino:</label>
+        <span>${kpisBD[0].nome}</span>
+      </div>
+      <div class="kpi">
+        <label >Para alcançar a meta:</label>
+        <span>${(kpisBD[0].faltante<0 ? 'Meta Alcançada' : 'R$'+(kpisBD[0].faltante).toLocaleString('pt-br',{style:'currency', currency: 'BRL'}))}</span>
+      </div>`;
+    }
+  }
+
+  //gráficos
+  var mediaSul = 0;
+  var mediaSudeste = 0;
+  var mediaNordeste = 0;
   const ctx2 = document.getElementById('myChart2');
 
-  new Chart(ctx2, {
+   let myChart2 = new Chart(ctx2, {
     type: 'bar',
     data: {
-      labels: ['Sul', 'Sudeste', 'Nordeste'],
+      labels: [''],
       datasets: [{
-        label: '# of Votes',
-        data: [5000, 3600, 7000],
-        borderWidth: 1
+        label: ['Sul'],
+        data: [mediaSul],
+        borderWidth: 1,
+        backgroundColor: ['rgb(247, 86, 124)']
+      },
+    {
+        label: ['Sudeste'],
+        data: [mediaSudeste],
+        borderWidth: 1,
+        backgroundColor: ['rgb(65, 60, 88)']
+      },
+    {
+        label: ['Nordeste'],
+        data: [mediaNordeste],
+        borderWidth: 1,
+        backgroundColor: ['rgb(241, 153, 83)']
       }]
     },
     options: {
@@ -121,41 +175,35 @@
     }
   });
 
+  var viagensSul = 0;
+  var viagensSudeste = 0;
+  var viagensNordeste = 0;
   const ctx1 = document.getElementById('myChart1');
 
-  new Chart(ctx1, {
+  let myChart1 = new Chart(ctx1, {
     type: 'doughnut',
     data: {
         labels: ['Sul','Nordeste', 'Sudeste'],
         datasets: [{
-            label: 'Número de viagens',
-            data: [300, 50, 100],
+            label: 'Número de viagens:',
+            data: [viagensSul, viagensSudeste, viagensNordeste],
             backgroundColor: [
-                'rgb(134, 186, 144)',
+                'rgb(247, 86, 124)',
                 'rgb(241, 153, 83)',
                 'rgb(65, 60, 88)'
             ],
             hoverOffset: 4
-        }]
+        },
+      ]
     }
 });
 
-
-  function obterDadosGrafico(idAquario) {
-
-        alterarTitulo(idAquario)
-
-        if (proximaAtualizacao != undefined) {
-            clearTimeout(proximaAtualizacao);
-        }
-
-        fetch(`/medidas/ultimas/${idAquario}`, { cache: 'no-store' }).then(function (response) {
+function obterDados(){
+  fetch(`/viagens/buscarGraficos`, { cache: 'no-store' }).then(function (response) {
             if (response.ok) {
                 response.json().then(function (resposta) {
                     console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
-                    resposta.reverse();
-
-                    plotarGrafico(resposta, idAquario);
+                    plotarGrafico(resposta);
 
                 });
             } else {
@@ -165,67 +213,27 @@
             .catch(function (error) {
                 console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
             });
-    }
+}
+function plotarGrafico(resposta){
+  if(resposta.length<1){
+    section_graficos.innerHTML = '<h2>Nenhum dado encontrado para os gráficos.</h2>'
+  }else{
+    viagensNordeste = resposta[0].num_visitas;
+    viagensSudeste = resposta[1].num_visitas;
+    viagensSul = resposta[2].num_visitas;
+    mediaNordeste = resposta[0].media_valor;
+    mediaSudeste = resposta[1].media_valor;
+    mediaSul = resposta[2].media_valor;
 
-    function plotarGrafico(resposta, idAquario) {
+    myChart2.data.datasets[0].data = [mediaSul];
+    myChart2.data.datasets[1].data = [mediaSudeste];
+    myChart2.data.datasets[2].data = [mediaNordeste];
+    myChart1.data.datasets[0].data = [ viagensSul,viagensNordeste,viagensSudeste];
 
-        console.log('iniciando plotagem do gráfico...');
+    myChart1.update()
+    myChart2.update()
+  }
+}
 
-        // Criando estrutura para plotar gráfico - labels
-        let labels = [];
-
-        // Criando estrutura para plotar gráfico - dados
-        let dados = {
-            labels: labels,
-            datasets: [{
-                label: 'Umidade',
-                data: [],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            },
-            {
-                label: 'Temperatura',
-                data: [],
-                fill: false,
-                borderColor: 'rgb(199, 52, 52)',
-                tension: 0.1
-            }]
-        };
-
-        console.log('----------------------------------------------')
-        console.log('Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":')
-        console.log(resposta)
-
-        // Inserindo valores recebidos em estrutura para plotar o gráfico
-        for (i = 0; i < resposta.length; i++) {
-            var registro = resposta[i];
-            labels.push(registro.momento_grafico);
-            dados.datasets[0].data.push(registro.umidade);
-            dados.datasets[1].data.push(registro.temperatura);
-        }
-
-        console.log('----------------------------------------------')
-        console.log('O gráfico será plotado com os respectivos valores:')
-        console.log('Labels:')
-        console.log(labels)
-        console.log('Dados:')
-        console.log(dados.datasets)
-        console.log('----------------------------------------------')
-
-        // Criando estrutura para plotar gráfico - config
-        const config = {
-            type: 'line',
-            data: dados,
-        };
-
-        // Adicionando gráfico criado em div na tela
-        let myChart = new Chart(
-            document.getElementById(`myChartCanvas${idAquario}`),
-            config
-        );
-
-        setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
-    }
 </script>
 </html>

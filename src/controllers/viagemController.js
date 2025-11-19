@@ -9,6 +9,14 @@ function buscarPorUsuario(req, res) {
   });
 }
 
+function buscarKpis(req, res) {
+  var fk_usuario = req.body.id_usuario;
+
+  viagemModel.buscarKpis(fk_usuario).then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 function buscarViagemAtual(req, res) {
   var fk_usuario = req.body.fk_usuario;
 
@@ -22,10 +30,30 @@ function listar(req, res) {
     res.status(200).json(resultado);
   });
 }
+
+function buscarGraficos(req, res) {
+  viagemModel.buscarGraficos().then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
 function concluirViagem(req, res) {
   var id_viagem = req.body.id_viagem;
 
       viagemModel.concluirViagem(id_viagem).then((resultado) => {
+        res.status(201).json(resultado);
+      }); 
+}
+
+function atualizarViagem(req, res) {
+  var id_viagem = req.body.id_viagem;
+  var dtIda = req.body.dtIda;
+  var dtVolta = req.body.dtVolta;
+  var meta_orcamento = req.body.meta_orcamento;
+  var orcamento_arrecadado = req.body.orcamento_arrecadado;
+  var anotacao = req.body.anotacao;
+
+      viagemModel.atualizarViagem(id_viagem,dtIda,dtVolta,meta_orcamento,orcamento_arrecadado,anotacao).then((resultado) => {
         res.status(201).json(resultado);
       }); 
 }
@@ -49,5 +77,8 @@ module.exports = {
     cadastrar,
     buscarPorUsuario,
     buscarViagemAtual,
-    concluirViagem
+    concluirViagem,
+    buscarKpis,
+    buscarGraficos,
+    atualizarViagem
 }

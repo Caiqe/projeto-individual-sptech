@@ -129,25 +129,26 @@ header{
 .kpi{
     display: flex;
     flex-direction: row;
-    
     justify-content: space-evenly;
     align-items: center;
     background-color: #2F4F4F;
     border: solid 2px #BEE7B8;
     border-radius: 30px;
-    width: 30%;
-    height: 100px;
+    width: 30.3%;
+    height: 130px;
     color: #BEE7B8;
 }
 .kpi label{
-    width: 30%;
-    font-size: 15px;
+    width: 20%;
+    font-size: 18px;
+    text-align: start;
 }
 .kpi span{
     font-weight: 600;
-    font-size: 35px;
+    font-size: 40px;
+    
 }
-.section-kpis{
+#section_kpis{
     display: flex;
     gap: 10px;
     position: relative;
@@ -162,16 +163,35 @@ header{
     position: relative;
     top: 10px;
     width: 85%;
-    margin-top: 50px;
+    margin-top: 10px;
     margin-left: 350px;
     justify-content: space-evenly;
 }
 .grafico{
-    background-color: beige;
-    padding: 10px;
+    background-color: #BEE7B8;
+    padding: 15px;
     width: 30%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
     border-radius: 30px;
+    border: solid 2px #2F4F4F;
 }
 .barra{
-    width: 50%;
+    width: 60%;
+}
+.label-grafico{
+    font-size: 25px;
+    background-color: #2F4F4F;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    border-radius: 20px;
+    color: white;
+}
+canvas{
+    margin-top: 25px;
 }
