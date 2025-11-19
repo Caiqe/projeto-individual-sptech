@@ -195,3 +195,11 @@ header{
 canvas{
     margin-top: 25px;
 }
+.descricao-grafico{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.descricao-grafico img{
+    width: 25px;
+}

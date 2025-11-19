@@ -79,10 +79,21 @@
       <div class="grafico">
         <label class="label-grafico">Regiões mais Visitadas:</label>
         <canvas id="myChart1"></canvas>
+        <h2 style="color:black;">
+          Sul: <span id="sul">0</span> | Sudeste: <span id="sudeste">0</span> | Nordeste: <span id="nordeste">0</span>
+        </h2>
+        <div class="descricao-grafico">
+          <img src="../assets/imgs/icons/info-thin.svg" alt="icone informação">
+          <p>O gráfico apresenta o total de todas as viagens cadastradas para cada região.</p>
+        </div>
       </div>
       <div class="grafico barra">
         <label class="label-grafico">Média de Orçamento por região:</label>
         <canvas id="myChart2"></canvas>
+        <div class="descricao-grafico">
+          <img src="../assets/imgs/icons/info-thin.svg" alt="icone informação">
+          <p>O gráfico apresenta a média de todos os orçamentos realizados para cada região.</p>
+        </div>
       </div>
     </section>
   </div>
@@ -132,7 +143,7 @@
       </div>
       <div class="kpi">
         <label >Para alcançar a meta:</label>
-        <span>${(kpisBD[0].faltante<0 ? 'Meta Alcançada' : 'R$'+(kpisBD[0].faltante).toLocaleString('pt-br',{style:'currency', currency: 'BRL'}))}</span>
+        <span>${(kpisBD[0].faltante<=0 ? 'Meta Alcançada' : 'R$'+(kpisBD[0].faltante).toLocaleString('pt-br',{style:'currency', currency: 'BRL'}))}</span>
       </div>`;
     }
   }
@@ -229,7 +240,10 @@ function plotarGrafico(resposta){
     myChart2.data.datasets[1].data = [mediaSudeste];
     myChart2.data.datasets[2].data = [mediaNordeste];
     myChart1.data.datasets[0].data = [ viagensSul,viagensNordeste,viagensSudeste];
-
+    
+    sul.innerHTML = viagensSul;
+    sudeste.innerHTML = viagensSudeste;
+    nordeste.innerHTML = viagensNordeste;
     myChart1.update()
     myChart2.update()
   }
