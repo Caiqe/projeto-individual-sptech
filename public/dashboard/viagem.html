@@ -72,7 +72,7 @@
 
   <section id="viagem-atual">
     <div id="formulario">
-        <h2>Planeje sua Viajem!</h2>
+        <h2 class="title-formulario">Planeje sua Viajem!</h2>
         <div class="campo">
             <label >Escolha seu destino:</label>
             <select  id="select_destino" >
@@ -331,7 +331,7 @@ function cadastrar() {
     } 
   }
 
-function sumirMensagem(dtIda,dtVolta, meta, arrecadado) {
+function sumirMensagem() {
     cardErro.style.display = "none";
   }
 
@@ -346,7 +346,7 @@ function validarCampos(){
     validaCampos = false;
     erroMsg += '<br>- Informe datas válidas para a viagem.';
   }
-  if(ida>volta){
+  if(input_dataIda.value>input_dataVolta.value){
     validaCampos = false;
     erroMsg += '<br>- Data de volta não pode ser antes da ida.';
   }

@@ -71,7 +71,6 @@
         </ul>
       </header>
       <section id="section_destinos">
-        
       </section>
     </div>
   </body>
@@ -104,7 +103,7 @@
         destinosBD.forEach(destino => {
             section_destinos.innerHTML += `<div class="card-destino">
             <img src="${destino.imagem_destino}" alt="imagem destino">
-            <h2>${destino.nome} - <span>${destino.uf}</span></h2>
+            <h2 class='nome-carddestino'>${destino.nome} - <span>${destino.uf}</span></h2>
             <h3>Descrição:</h3>
             <p>${destino.descricao}</p>
         </div>`;

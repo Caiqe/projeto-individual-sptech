@@ -217,6 +217,9 @@ h2{
     font-weight: 300;
 
 }
+.title-formulario{
+    color: white;
+}
 .title-viagem{
     font-size: 40px;
     font-style: italic;
@@ -230,6 +233,7 @@ h2{
     text-decoration: underline 2px;
     position: absolute;
 }
+
 .img-destino{
     width: 100%;
     border-bottom: solid 2px #2F4F4F;
@@ -319,6 +323,10 @@ h2{
     flex-direction: row;
     gap: 0;
 }
+.nome-carddestino{
+    color: white;
+}
+
 .nome-destino h2{
     font-size: 30px;
     font-style: italic;

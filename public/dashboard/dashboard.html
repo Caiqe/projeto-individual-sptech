@@ -84,7 +84,7 @@
         </h2>
         <div class="descricao-grafico">
           <img src="../assets/imgs/icons/info-thin.svg" alt="icone informação">
-          <p>O gráfico apresenta o total de todas as viagens cadastradas para cada região.</p>
+          <p>O gráfico apresenta a quantidade de viagens cadastradas por todos os usuários para cada região.</p>
         </div>
       </div>
       <div class="grafico barra">
@@ -92,7 +92,7 @@
         <canvas id="myChart2"></canvas>
         <div class="descricao-grafico">
           <img src="../assets/imgs/icons/info-thin.svg" alt="icone informação">
-          <p>O gráfico apresenta a média de todos os orçamentos realizados para cada região.</p>
+          <p>O gráfico apresenta a média sobre os orçamentos realizados por todos os usuários para cada região.</p>
         </div>
       </div>
     </section>
@@ -135,7 +135,7 @@
       
       section_kpis.innerHTML = `<div class="kpi">
         <label >Dias faltantes próxima viagem:</label>
-        <span>${(diasRestantes).toFixed()}</span>
+        <span>${(diasRestantes+1).toFixed()}</span>
       </div>
       <div class="kpi">
         <label >Próximo Destino:</label>
