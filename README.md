@@ -24,7 +24,7 @@ O sistema conta com funcionalidades como: *Login*/*Cadastro*, *Planejamento de V
 
 
 1. Crie, no Banco de Dados, as tabelas necessárias para o funcionamento deste projeto.
-- Siga as instruções no arquivo **/src/database/script-tabelas.sql**
+- Siga as instruções no arquivo **/src/database/script-tabelas.sql** e **/src/database/script-insert.sql**
 
 
 3. Acesse o arquivo **app.js** e parametrize o ambiente.
