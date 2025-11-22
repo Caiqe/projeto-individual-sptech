@@ -106,14 +106,45 @@
           <p>
             Crie sua conta agora e comece a planejar suas Viagens!
           </p>
-          <a id="btt-callToAction" href="">Comece Já</a>
+          <a id="btt-callToAction" href="./cadastro.html">Comece Já</a>
         </div>
         <img
           src="./assets/imgs/imgCallToAction3.png"
           alt="Vista arraial do cabo"
         />
       </div>
-      
+      <div class="sobre-mim">
+        <h2 class="title-section"><span style="font-style: normal;">🧑🏻‍💻</span> Sobre mim:</h2>
+        <section class="eu-e-praia">
+          <img src="./assets/imgs/eu-praia.png" alt="">
+          <div>
+            <h2>Como tudo começou...</h2>
+            <div class="texto">
+              <p>Me recordo de quando ainda era criança eu viajava com minha família cruzando o país rumo ao nordeste, eram 3 dias viajando de carro. Hoje olhando para trás não sei distinguir se gostava mais do trajeto ou de quando chegava ao destino, viagens para mim sempre foram sinônimo de alegria, de estar com a família e descobrir o novo.</p>
+              <p>  
+              Essa paixão transcendeu os anos e hoje com mais idade me enxergo com o espírito de aventureiro. Já viajei para diferentes lugares, mas sei que ainda existe um mundo o qual quero explorar.</p>
+              <p>Por mais que eu ame viajar para diferentes destinos de diferentes tipos, ir a <b>Praia</b> é o meu tipo preferido de viagem. A sensação de olhar o horizonte, as ondas ou mesmo somente sentir a brisa do vento ja é sinônimo de tranquilidade e paz para meu coração.</p>
+              <p>O estilo de vida mais calmo e a humildade de entender que somos menor que um grão de areia são algo que quero para minha vida, e um dia vou realizar o sonho de morar na Praia.</p>
+            </div>
+          </div>
+        </section>
+        <h2 class="title-section"><span style="font-style: normal;">🧳</span> Algumas das minhas viagens:</h2>
+          <section id="carrossel_historias">
+            <div class="historia">
+              <h2><span style="font-style: normal;">📍</span> Riviera de São Lourenço - SP</h2>
+              <h4>📆 Novembro - 2025</h4>
+              <p>Tive o prazer de visitar a praia ainda enquanto desenvolvia esse projeto.<br><br>
+                Riviera é um bairro na cidade de Bertioga, é conhecido por sua segurança e alto padrão de vida <br><br>
+                Essa viagem me serviu quase como uma pesquisa para esse projeto, pude refletir sobre o que a praia significa para mim e ter ideias para o desenvolvimento desse site. <br><br>
+              </p>
+            </div>
+            <img src="./assets/imgs/bikeRiviera.gif" alt="Foto/GIF autor">
+          </section>
+          <div class="btns-carrossel">
+            <img class="btn-carrossel" src="assets/imgs/icons/caret-circle-left-thin.svg" onclick="passarEsquerdaCarrossel()">
+            <img class="btn-carrossel" src="./assets/imgs/icons/caret-circle-right-thin.svg" onclick="passarDireitaCarrossel()">
+          </div>
+      </div>
     </section>
     <footer>
       <div id="footer-logo">
@@ -124,19 +155,77 @@
         <div class="info">
           <h2>Acesse Já:</h2>
           <ul>
-            <li>Login</li>
-            <li>Cadastro</li>
+            <li><a href="./login.html">Login</a></li>
+            <li><a href="./cadastro.html">Cadastro</a></li>
           </ul>
         </div>
         <div class="info">
           <h2>Saiba Mais:</h2>
           <ul>
-            <li>GitHub</li>
-            <li>Responsável</li>
+            <li><a href="https://github.com/Caiqe">GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/cttcaiquegomes/">Responsável</a></li>
           </ul>
         </div>
       </div>
     </footer>
-    
   </body>
+  <script>
+    var contadorCarrossel = 2;
+    var carrossel = [
+      `<div class="historia">
+              <h2><span style="font-style: normal;">📍</span> Praia do Sono - RJ</h2>
+              <h4>📆 Abril - 2023</h4>
+              <p>Visitei a Praia do Sono no ano de 2023, foi uma experiência incrivel e surpreendente. <br><br>
+                Se trata de uma praia isolada e os únicos meios de acesso são via barco ou por meio de trilha. <br><br>
+                Lá, fiz trilhas e conheci histórias, se trata de uma vilarejo de pescadores com uma cultura incrivel.
+              </p>
+            </div><img src="./assets/imgs/praiadosono.gif" alt="Foto/GIF autor">`,
+    `<div class="historia">
+              <h2><span style="font-style: normal;">📍</span> Ubatuba - SP</h2>
+              <h4>📆 Julho - 2024</h4>
+              <p>Minha última visita a Ubatuba foi em 2024 com minha namorada. <br><br>
+                Ubatuba é uma cidade incrivel, só nessa viagem eu pude conhecer 11 praias ao todo. <br><br>
+                Minha parte preferida foi conhecer a reserva natural da Ilha Anchieta, pude conhecer mais da história e explorar praias lindas. <br><br>
+                Foi essa cidade que me trouxe o sonho de morar na praia, sua conservação e beleza me conquistaram.
+              </p>
+            </div><img src="./assets/imgs/ubatuba.gif" alt="Foto/GIF autor">`,
+  `<div class="historia">
+              <h2><span style="font-style: normal;">📍</span> Riviera de São Lourenço - SP</h2>
+              <h4>📆 Novembro - 2025</h4>
+              <p>Tive o prazer de visitar a praia ainda enquanto desenvolvia esse projeto.<br><br>
+                Riviera é um bairro na cidade de Bertioga, é conhecido por sua segurança e alto padrão de vida <br><br>
+                Essa viagem me serviu quase como uma pesquisa para esse projeto, pude refletir sobre o que a praia significa para mim e ter ideias para o desenvolvimento desse site. <br><br>                
+              </p>
+            </div><img src="./assets/imgs/bikeRiviera.gif" alt="Foto/GIF autor">`]
+
+  function passarDireitaCarrossel (){
+    if(contadorCarrossel == 0){
+      contadorCarrossel=1;
+      carrossel_historias.innerHTML = carrossel[1];
+    }
+    else if(contadorCarrossel == 1){
+      contadorCarrossel=2;
+      carrossel_historias.innerHTML = carrossel[2];
+    }
+    else if(contadorCarrossel == 2){
+      contadorCarrossel=0;
+      carrossel_historias.innerHTML = carrossel[0];
+    }
+  }
+
+  function passarEsquerdaCarrossel (){
+    if(contadorCarrossel == 0){
+      contadorCarrossel=2;
+      carrossel_historias.innerHTML = carrossel[2];
+    }
+    else if(contadorCarrossel == 1){
+      contadorCarrossel=0;
+      carrossel_historias.innerHTML = carrossel[0];
+    }
+    else if(contadorCarrossel == 2){
+      contadorCarrossel=1;
+      carrossel_historias.innerHTML = carrossel[1];
+    }
+  }
+  </script>
 </html>
