@@ -232,9 +232,9 @@ function plotarGrafico(resposta){
     viagensNordeste = resposta[0].num_visitas;
     viagensSudeste = resposta[1].num_visitas;
     viagensSul = resposta[2].num_visitas;
-    mediaNordeste = resposta[0].media_valor;
-    mediaSudeste = resposta[1].media_valor;
-    mediaSul = resposta[2].media_valor;
+    mediaNordeste = (Number(resposta[0].soma_orcamentos) / Number(resposta[0].num_visitas)).toFixed(2);
+    mediaSudeste =(Number(resposta[1].soma_orcamentos) / Number(resposta[1].num_visitas)).toFixed(2);
+    mediaSul = (Number(resposta[2].soma_orcamentos) / Number(resposta[2].num_visitas)).toFixed(2);
 
     myChart2.data.datasets[0].data = [mediaSul];
     myChart2.data.datasets[1].data = [mediaSudeste];
